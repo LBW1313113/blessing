@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节日祝福</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <canvas id="fireworks"></canvas>
+        <div class="light-spots" id="lightSpots"></div>
+        <div class="confetti-container" id="confettiContainer"></div>
+        <div class="greeting">
+            <h1 class="title">节日快乐</h1>
+            <p class="message">愿你的生活充满阳光</p>
+            <p class="message">幸福永远相伴</p>
+        </div>
+        <div class="floating-texts" id="floatingTexts"></div>
+        <div class="qrcode-container" id="qrcodeContainer">
+            <p class="qrcode-title">扫码打开祝福</p>
+            <div id="qrcode"></div>
+            <p class="qrcode-note">⚠️ 当前二维码为本地地址<br>如需分享，请先部署到服务器</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
