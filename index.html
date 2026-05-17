@@ -17,12 +17,12 @@
             <p class="message">幸福永远相伴</p>
         </div>
         <div class="floating-texts" id="floatingTexts"></div>
-        <div class="qrcode-container" id="qrcodeContainer">
-            <p class="qrcode-title">扫码打开祝福</p>
-            <div id="qrcode"></div>
-            <p class="qrcode-note">⚠️ 当前二维码为本地地址<br>如需分享，请先部署到服务器</p>
-        </div>
+
+        <button id="musicToggle" class="music-toggle">🔊</button>
     </div>
+    <audio id="bgMusic" loop autoplay preload="auto">
+        <source src="https://music.163.com/song/media/outer/url?id=1986132063.mp3" type="audio/mpeg">
+    </audio>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>
