@@ -489,7 +489,7 @@ for (let i = 0; i < 3; i++) {
 if (typeof QRCode !== 'undefined') {
     const qrCodeContainer = document.getElementById('qrcode');
     new QRCode(qrCodeContainer, {
-        text: window.location.href,
+        text: 'https://lbw1313113.github.io/blessing/',
         width: 120,
         height: 120,
         colorDark: '#1a1a3e',
