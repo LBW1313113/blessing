@@ -485,18 +485,31 @@ for (let i = 0; i < 3; i++) {
     setTimeout(createConfetti, i * 1000);
 }
 
-// 生成二维码
-if (typeof QRCode !== 'undefined') {
-    const qrCodeContainer = document.getElementById('qrcode');
-    new QRCode(qrCodeContainer, {
-        text: 'https://lbw1313113.github.io/blessing/',
-        width: 120,
-        height: 120,
-        colorDark: '#1a1a3e',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
+
+
+// 背景音乐控制
+const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+
+// 处理自动播放限制
+document.addEventListener('DOMContentLoaded', () => {
+    // 尝试自动播放
+    bgMusic.play().catch(() => {
+        // 如果自动播放失败，显示暂停状态
+        musicToggle.textContent = '🔇';
+        musicToggle.classList.add('paused');
     });
-    console.log('二维码生成成功');
-} else {
-    console.error('QRCode库未加载，二维码生成失败');
-}
+});
+
+// 切换播放/暂停
+musicToggle.addEventListener('click', () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '🔊';
+        musicToggle.classList.remove('paused');
+    } else {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+        musicToggle.classList.add('paused');
+    }
+});
