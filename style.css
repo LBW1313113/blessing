@@ -135,45 +135,43 @@ body {
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 
-.qrcode-container {
-    position: absolute;
+
+
+.music-toggle {
+    position: fixed;
     bottom: 30px;
-    right: 30px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 15px;
-    z-index: 20;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6),
-                0 0 60px rgba(255, 215, 0, 0.4);
-    animation: qrcodeFadeIn 2s ease-out;
-    backdrop-filter: blur(10px);
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 30;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    transition: all 0.3s ease;
+    animation: musicPulse 2s ease-in-out infinite;
 }
 
-.qrcode-title {
-    text-align: center;
-    color: #333;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    font-weight: bold;
+.music-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
 }
 
-.qrcode-note {
-    text-align: center;
-    color: #666;
-    font-size: 0.7rem;
-    margin-top: 8px;
-    line-height: 1.4;
+.music-toggle.paused {
+    animation: none;
+    opacity: 0.6;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-#qrcode {
-    width: 120px;
-    height: 120px;
-}
-
-#qrcode canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
+@keyframes musicPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 @keyframes qrcodeFadeIn {
