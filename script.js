@@ -2,6 +2,10 @@
 const canvas = document.getElementById('fireworks');
 const ctx = canvas.getContext('2d');
 
+// 预加载爱心图片
+const heartImage = new Image();
+heartImage.src = 'heart.png';
+
 // 设置canvas尺寸
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -27,15 +31,21 @@ class Particle {
     draw() {
         ctx.save();
         ctx.globalAlpha = this.alpha;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color;
-        ctx.fill();
         
-        // 添加发光效果
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = this.color;
-        ctx.fill();
+        if (heartImage.complete) {
+            // 直接绘制爱心图片
+            const size = this.size * 20;
+            const x = this.x - size / 2;
+            const y = this.y - size / 2;
+            ctx.drawImage(heartImage, x, y, size, size);
+        } else {
+            // 图片未加载完成时，绘制圆形粒子
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        
         ctx.restore();
     }
 
@@ -83,8 +93,7 @@ class Firework {
         this.particles = [];
         this.trails = [];
         this.explosionType = Math.floor(Math.random() * 6); // 0-5种爆炸模式
-        this.colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8800', '#ff0088', '#ffffff', '#ffd700', '#ff69b4', '#4ecdc4', '#45b7d1', '#ff6b6b'];
-        this.mainColor = this.colors[Math.floor(Math.random() * this.colors.length)];
+        this.mainColor = '#ff0000'; // 统一使用红色
         this.createParticles();
     }
 
@@ -93,7 +102,7 @@ class Firework {
         
         switch(this.explosionType) {
             case 0: // 超级圆形大爆炸
-                particleCount = 300;
+                particleCount = 50;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = (Math.PI * 2 / particleCount) * i;
                     const speed = Math.random() * 6 + 4;
@@ -101,13 +110,13 @@ class Firework {
                         x: Math.cos(angle) * speed,
                         y: Math.sin(angle) * speed
                     };
-                    const size = Math.random() * 3 + 1.5;
-                    const color = Math.random() > 0.6 ? this.mainColor : this.colors[Math.floor(Math.random() * this.colors.length)];
+                    const size = Math.random() * 1.5 + 1;
+                    const color = '#ff0000'; // 所有粒子都使用红色
                     this.particles.push(new Particle(this.x, this.y, color, velocity, size));
                 }
                 
                 // 添加外层光环粒子
-                const outerCount = 100;
+                const outerCount = 20;
                 for (let i = 0; i < outerCount; i++) {
                     const angle = (Math.PI * 2 / outerCount) * i;
                     const speed = Math.random() * 3 + 8;
@@ -115,13 +124,13 @@ class Firework {
                         x: Math.cos(angle) * speed,
                         y: Math.sin(angle) * speed
                     };
-                    const size = Math.random() * 2 + 1;
-                    this.particles.push(new Particle(this.x, this.y, '#ffffff', velocity, size));
+                    const size = Math.random() * 1 + 0.5;
+                    this.particles.push(new Particle(this.x, this.y, '#ff6666', velocity, size)); // 淡红色
                 }
                 break;
                 
             case 1: // 超大心形爆炸
-                particleCount = 250;
+                particleCount = 40;
                 for (let i = 0; i < particleCount; i++) {
                     const t = Math.random() * Math.PI * 2;
                     const scale = Math.random() * 6 + 4;
@@ -129,14 +138,14 @@ class Firework {
                     const x = 16 * Math.pow(Math.sin(t), 3) * scale / 16;
                     const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * scale / 16;
                     const velocity = { x, y };
-                    const size = Math.random() * 3 + 1.5;
-                    const color = Math.random() > 0.5 ? this.mainColor : this.colors[Math.floor(Math.random() * this.colors.length)];
+                    const size = Math.random() * 1.5 + 1;
+                    const color = '#ff0000'; // 所有粒子都使用红色
                     this.particles.push(new Particle(this.x, this.y, color, velocity, size));
                 }
                 break;
                 
             case 2: // 多重环形爆炸
-                particleCount = 350;
+                particleCount = 60;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = (Math.PI * 2 / particleCount) * i;
                     const radius = Math.random() * 5 + 2;
@@ -145,26 +154,26 @@ class Firework {
                         x: Math.cos(angle) * (radius + speedVariation),
                         y: Math.sin(angle) * (radius + speedVariation)
                     };
-                    const size = Math.random() * 2 + 1;
-                    const color = i % 2 === 0 ? '#ffffff' : this.mainColor;
+                    const size = Math.random() * 1.5 + 0.8;
+                    const color = i % 2 === 0 ? '#ff6666' : this.mainColor;
                     this.particles.push(new Particle(this.x, this.y, color, velocity, size));
                 }
                 
                 // 添加第二层环
-                for (let i = 0; i < 150; i++) {
-                    const angle = (Math.PI * 2 / 150) * i;
+                for (let i = 0; i < 25; i++) {
+                    const angle = (Math.PI * 2 / 25) * i;
                     const speed = 8 + Math.random() * 4;
                     const velocity = {
                         x: Math.cos(angle) * speed,
                         y: Math.sin(angle) * speed
                     };
-                    const size = Math.random() * 1.5 + 0.5;
-                    this.particles.push(new Particle(this.x, this.y, this.colors[Math.floor(Math.random() * this.colors.length)], velocity, size));
+                    const size = Math.random() * 1 + 0.5;
+                    this.particles.push(new Particle(this.x, this.y, '#ff6666', velocity, size));
                 }
                 break;
                 
             case 3: // 超级流星雨爆炸
-                particleCount = 200;
+                particleCount = 35;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.5;
                     const speed = Math.random() * 8 + 6;
@@ -172,15 +181,15 @@ class Firework {
                         x: Math.cos(angle) * speed,
                         y: Math.sin(angle) * speed
                     };
-                    const size = Math.random() * 3 + 1.5;
+                    const size = Math.random() * 1.5 + 1;
                     const x = this.x + (Math.random() - 0.5) * 150;
                     const y = this.y + (Math.random() - 0.5) * 50;
-                    this.particles.push(new Particle(x, y, this.mainColor, velocity, size));
+                    this.particles.push(new Particle(x, y, '#ff0000', velocity, size)); // 所有粒子都使用红色
                 }
                 break;
                 
             case 4: // 五星形爆炸（新增）
-                particleCount = 280;
+                particleCount = 45;
                 for (let i = 0; i < particleCount; i++) {
                     const k = i % 5;
                     const angle = (Math.PI * 2 / particleCount) * i + (k * Math.PI * 2 / 5);
@@ -190,14 +199,14 @@ class Firework {
                         x: Math.cos(angle) * speed * distance / 4,
                         y: Math.sin(angle) * speed * distance / 4
                     };
-                    const size = Math.random() * 2.5 + 1;
-                    const color = k % 2 === 0 ? this.mainColor : this.colors[Math.floor(Math.random() * this.colors.length)];
+                    const size = Math.random() * 1.5 + 0.8;
+                    const color = '#ff0000'; // 所有粒子都使用红色
                     this.particles.push(new Particle(this.x, this.y, color, velocity, size));
                 }
                 break;
                 
             case 5: // 螺旋爆炸（新增）
-                particleCount = 320;
+                particleCount = 55;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = i * 0.1;
                     const radius = i * 0.05;
@@ -206,8 +215,8 @@ class Firework {
                         x: Math.cos(angle) * radius * speed / 8,
                         y: Math.sin(angle) * radius * speed / 8
                     };
-                    const size = Math.random() * 2 + 1;
-                    const color = this.colors[(i + Math.floor(Math.random() * this.colors.length)) % this.colors.length];
+                    const size = Math.random() * 1.2 + 0.8;
+                    const color = '#ff0000'; // 所有粒子都使用红色
                     this.particles.push(new Particle(this.x, this.y, color, velocity, size));
                 }
                 break;
@@ -232,7 +241,7 @@ class Firework {
     }
     
     createSecondaryExplosion() {
-        const secondaryCount = 100;
+        const secondaryCount = 15;
         for (let i = 0; i < secondaryCount; i++) {
             const angle = (Math.PI * 2 / secondaryCount) * i;
             const speed = Math.random() * 3 + 1.5;
@@ -243,13 +252,13 @@ class Firework {
                 x: Math.cos(angle) * speed,
                 y: Math.sin(angle) * speed
             };
-            const size = Math.random() * 1.5 + 0.8;
-            this.particles.push(new Particle(x, y, this.colors[Math.floor(Math.random() * this.colors.length)], velocity, size));
+            const size = Math.random() * 1 + 0.5;
+            this.particles.push(new Particle(x, y, '#ff6666', velocity, size)); // 使用淡红色
         }
     }
     
     createTertiaryExplosion() {
-        const tertiaryCount = 80;
+        const tertiaryCount = 12;
         for (let i = 0; i < tertiaryCount; i++) {
             const angle = (Math.PI * 2 / tertiaryCount) * i;
             const speed = Math.random() * 2 + 1;
@@ -260,13 +269,13 @@ class Firework {
                 x: Math.cos(angle) * speed,
                 y: Math.sin(angle) * speed
             };
-            const size = Math.random() * 1 + 0.5;
-            this.particles.push(new Particle(x, y, this.colors[Math.floor(Math.random() * this.colors.length)], velocity, size));
+            const size = Math.random() * 0.8 + 0.4;
+            this.particles.push(new Particle(x, y, '#ff6666', velocity, size)); // 使用淡红色
         }
     }
     
     createShockwave() {
-        const shockwaveCount = 50;
+        const shockwaveCount = 8;
         for (let i = 0; i < shockwaveCount; i++) {
             const angle = (Math.PI * 2 / shockwaveCount) * i;
             const speed = 1 + Math.random() * 1;
@@ -274,8 +283,8 @@ class Firework {
                 x: Math.cos(angle) * speed,
                 y: Math.sin(angle) * speed
             };
-            const size = 1;
-            this.particles.push(new Particle(this.x, this.y, '#ffffff', velocity, size));
+            const size = 0.8;
+            this.particles.push(new Particle(this.x, this.y, '#ffeeee', velocity, size)); // 极淡红色
         }
     }
 
@@ -340,28 +349,45 @@ class Star {
 }
 
 let fireworks = [];
+const MAX_TOTAL_PARTICLES = 800; // 限制屏幕上最大总粒子数
 
 // 初始化星星
 function initStars() {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 80; i++) {
         stars.push(new Star());
     }
 }
 
+// 计算总粒子数
+function getTotalParticles() {
+    let total = 0;
+    fireworks.forEach(firework => {
+        total += firework.particles.length + firework.trails.length;
+    });
+    return total;
+}
+
 // 创建随机烟花
 function createRandomFirework() {
+    // 如果总粒子数超过限制，不创建新烟花
+    if (getTotalParticles() > MAX_TOTAL_PARTICLES) {
+        return;
+    }
+    
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height * 0.4;
     fireworks.push(new Firework(x, y));
     
     // 有时候同时发射多个烟花
-    if (Math.random() > 0.6) {
+    if (Math.random() > 0.7 && getTotalParticles() < MAX_TOTAL_PARTICLES) {
         const count = Math.floor(Math.random() * 2) + 1;
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
-                const offsetX = (Math.random() - 0.5) * 200;
-                const offsetY = (Math.random() - 0.5) * 100;
-                fireworks.push(new Firework(x + offsetX, y + offsetY));
+                if (getTotalParticles() < MAX_TOTAL_PARTICLES) {
+                    const offsetX = (Math.random() - 0.5) * 200;
+                    const offsetY = (Math.random() - 0.5) * 100;
+                    fireworks.push(new Firework(x + offsetX, y + offsetY));
+                }
             }, i * 200);
         }
     }
@@ -370,45 +396,90 @@ function createRandomFirework() {
 // 创建背景光斑
 const lightSpots = document.getElementById('lightSpots');
 function createLightSpots() {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 8; i++) {
         const spot = document.createElement('div');
         spot.className = 'light-spot';
         spot.style.width = (Math.random() * 100 + 50) + 'px';
         spot.style.height = spot.style.width;
         spot.style.left = Math.random() * 100 + '%';
-        spot.style.top = Math.random() * 100 + '%';
+        spot.style.top = Math.random() * 70 + '%';
         spot.style.animationDelay = Math.random() * 3 + 's';
-        spot.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        spot.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        
+        // 添加绳子连接吊篮
+        const string1 = document.createElement('div');
+        string1.className = 'string';
+        const string2 = document.createElement('div');
+        string2.className = 'string';
+        spot.appendChild(string1);
+        spot.appendChild(string2);
+        
         lightSpots.appendChild(spot);
     }
 }
 
-// 创建彩带
-const confettiContainer = document.getElementById('confettiContainer');
-const confettiColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8800', '#ff0088', '#ffffff', '#ffd700', '#ff69b4', '#4ecdc4', '#45b7d1'];
+// 创建飘落爱心
+const heartContainer = document.getElementById('heartContainer');
+const heartSizes = [30, 40, 50, 60, 70, 80];
+const heartRotations = [-30, -15, 0, 15, 30, 45];
 
-function createConfetti() {
-    const count = Math.floor(Math.random() * 10) + 5;
+function createFallingHeart() {
+    const count = Math.floor(Math.random() * 5) + 4;
     for (let i = 0; i < count; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.width = (Math.random() * 8 + 4) + 'px';
-        confetti.style.height = (Math.random() * 12 + 6) + 'px';
-        confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-        confetti.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        confetti.style.animationDelay = Math.random() * 2 + 's';
-        confettiContainer.appendChild(confetti);
+        const heart = document.createElement('div');
+        heart.className = 'falling-heart';
+        heart.style.left = Math.random() * 100 + '%';
+        const size = heartSizes[Math.floor(Math.random() * heartSizes.length)];
+        heart.style.width = size + 'px';
+        heart.style.height = size + 'px';
+        const rotation = heartRotations[Math.floor(Math.random() * heartRotations.length)];
+        heart.style.transform = `rotate(${rotation}deg)`;
+        heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
+        heart.style.animationDelay = Math.random() * 3 + 's';
+        heartContainer.appendChild(heart);
         
-        // 移除过期彩带
+        // 移除过期爱心
         setTimeout(() => {
-            confetti.remove();
-        }, 10000);
+            heart.remove();
+        }, 15000);
     }
 }
 
-// 定时创建彩带
-setInterval(createConfetti, 800);
+// 创建点击位置淡出爱心
+function createClickHearts(x, y) {
+    const clickHeartContainer = document.getElementById('clickHeartContainer') || createClickHeartContainer();
+    
+    // 只生成一个大爱心
+    const heart = document.createElement('div');
+    heart.className = 'click-heart';
+    heart.style.left = x + 'px';
+    heart.style.top = y + 'px';
+    
+    // 使用更大的尺寸范围
+    const clickSizes = [60, 70, 80, 90, 100];
+    const size = clickSizes[Math.floor(Math.random() * clickSizes.length)];
+    heart.style.width = size + 'px';
+    heart.style.height = size + 'px';
+    
+    // 随机旋转角度，使爱心方向不一致（-180到180度）
+    const rotation = Math.floor(Math.random() * 360) - 180;
+    heart.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(0)`;
+    heart.style.animationDuration = (Math.random() * 1 + 2) + 's';
+    clickHeartContainer.appendChild(heart);
+    
+    // 移除过期爱心
+    setTimeout(() => {
+        heart.remove();
+    }, 1000);
+}
+
+function createClickHeartContainer() {
+    const container = document.createElement('div');
+    container.id = 'clickHeartContainer';
+    container.className = 'click-heart-container';
+    document.body.appendChild(container);
+    return container;
+}
 
 // 动画循环
 function animate() {
@@ -431,23 +502,14 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// 初始化星星
-initStars();
-// 定时创建烟花
-setInterval(createRandomFirework, 600);
-animate();
-
-// 点击创建烟花
-canvas.addEventListener('click', (e) => {
-    fireworks.push(new Firework(e.clientX, e.clientY));
-});
-
 // 浮动祝福文字
 const floatingTexts = document.getElementById('floatingTexts');
 const blessingTexts = [
-    '新年快乐', '身体健康', '万事如意', '恭喜发财', '阖家幸福',
-    '吉祥如意', '步步高升', '财源广进', '平安喜乐', '笑口常开',
-    '福如东海', '寿比南山', '心想事成', '梦想成真', '幸福美满'
+    '我爱你', '一生一世', '永浴爱河', '白头偕老', '心心相印',
+    '甜蜜爱情', '甜甜蜜蜜', '浪漫告白', '一见钟情', '两情相悦',
+    '执子之手', '与子偕老', '天作之合', '情比金坚', '海枯石烂',
+    '天长地久', '永结同心', '百年好合', '花好月圆', '情投意合',
+    '520', '我爱你一生', '情人节快乐', '爱在心底', '遇见你真好'
 ];
 
 const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'];
@@ -469,47 +531,67 @@ function createFloatingText() {
     }, 20000);
 }
 
-// 定时创建浮动文字
-setInterval(createFloatingText, 800);
-
-// 初始创建一些浮动文字
-for (let i = 0; i < 5; i++) {
-    setTimeout(createFloatingText, i * 1000);
-}
-
-// 初始化背景光斑
-createLightSpots();
-
-// 初始创建一些彩带
-for (let i = 0; i < 3; i++) {
-    setTimeout(createConfetti, i * 1000);
-}
-
-
-
 // 背景音乐控制
 const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
+let animationStarted = false;
+let fireworkInterval;
+let heartInterval;
+let floatingTextInterval;
 
-// 处理自动播放限制
-document.addEventListener('DOMContentLoaded', () => {
-    // 尝试自动播放
-    bgMusic.play().catch(() => {
-        // 如果自动播放失败，显示暂停状态
-        musicToggle.textContent = '🔇';
-        musicToggle.classList.add('paused');
-    });
-});
+// 用户点击页面任意位置开始播放所有动画和音乐
+function startAnimation() {
+    if (!animationStarted) {
+        animationStarted = true;
+        
+        // 显示祝福语并播放进场动画
+        document.querySelector('.greeting').classList.add('animate');
+        
+        // 初始化星星
+        initStars();
+        
+        // 初始化背景光斑
+        createLightSpots();
+        
+        // 开始动画循环
+        animate();
+        
+        // 定时创建烟花
+        fireworkInterval = setInterval(createRandomFirework, 1200);
+        
+        // 定时创建飘落爱心
+        heartInterval = setInterval(createFallingHeart, 1500);
+        
+        // 定时创建浮动文字
+        floatingTextInterval = setInterval(createFloatingText, 1500);
+        
+        // 初始创建一些浮动文字
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createFloatingText, i * 1000);
+        }
+        
+        // 初始创建一些爱心
+        for (let i = 0; i < 3; i++) {
+            setTimeout(createFallingHeart, i * 1000);
+        }
+        
+        // 播放音乐
+        bgMusic.play().then(() => {
+            console.log('音乐开始播放');
+        }).catch(error => {
+            console.log('播放失败:', error);
+        });
+    }
+}
 
-// 切换播放/暂停
-musicToggle.addEventListener('click', () => {
-    if (bgMusic.paused) {
-        bgMusic.play();
-        musicToggle.textContent = '🔊';
-        musicToggle.classList.remove('paused');
-    } else {
-        bgMusic.pause();
-        musicToggle.textContent = '🔇';
-        musicToggle.classList.add('paused');
+// 点击创建淡出爱心
+canvas.addEventListener('click', (e) => {
+    if (animationStarted) {
+        createClickHearts(e.clientX, e.clientY);
     }
 });
+
+// 监听用户第一次点击
+document.addEventListener('click', startAnimation, { once: true });
+
+// 同时也支持触摸事件（移动设备）
+document.addEventListener('touchstart', startAnimation, { once: true });
