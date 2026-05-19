@@ -141,7 +141,7 @@ body {
 
 .light-spot {
     position: absolute;
-    background-image: url('热气球.png');
+    background-image: url('./热气球.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -162,7 +162,7 @@ body {
     position: absolute;
     top: -50px;
     opacity: 0.8;
-    background-image: url('heart.png');
+    background-image: url('./heart.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -184,7 +184,7 @@ body {
 .click-heart {
     position: absolute;
     opacity: 0;
-    background-image: url('heart.png');
+    background-image: url('./heart.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
