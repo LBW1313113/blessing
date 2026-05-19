@@ -1,0 +1,336 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffb6c1 50%, #ffc0cb 100%);
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.greeting {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    text-align: center;
+    z-index: 10;
+    color: #fff;
+    opacity: 0;
+}
+
+.greeting.animate {
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                 0 0 40px rgba(255, 215, 0, 0.6),
+                 0 0 60px rgba(255, 215, 0, 0.4);
+    animation: glow 2s ease-in-out infinite alternate, pulse 1.5s ease-in-out infinite, colorShift 8s linear infinite;
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1, #ffd700);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.message {
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    opacity: 0;
+    animation: slideUp 1s ease-out forwards, messageGlow 2s ease-in-out infinite alternate;
+    animation-delay: 1s, 3s;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.message:nth-child(3) {
+    animation-delay: 1.5s, 3.5s;
+}
+
+.message:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.message:nth-child(3) {
+    animation-delay: 1.5s;
+}
+
+/* 浮动祝福文字样式 */
+.floating-texts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.floating-text {
+    position: absolute;
+    top: 100%;
+    font-weight: bold;
+    opacity: 0;
+    animation: floatUp linear forwards;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+}
+
+
+
+.heart-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.light-spots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.light-spot {
+    position: absolute;
+    background-image: url('./hot_balloon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: floatBalloon 8s ease-in-out infinite alternate;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes floatBalloon {
+    0% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    100% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+.falling-heart {
+    position: absolute;
+    top: -50px;
+    opacity: 0.8;
+    background-image: url('./heart.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: heartFall linear forwards;
+}
+
+/* 点击爱心容器 */
+.click-heart-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* 点击爱心样式 */
+.click-heart {
+    position: absolute;
+    opacity: 0;
+    background-image: url('./heart.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: clickHeartFade ease-out forwards;
+}
+
+@keyframes clickHeartFade {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    30% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes qrcodeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                     0 0 40px rgba(255, 215, 0, 0.6),
+                     0 0 60px rgba(255, 215, 0, 0.4);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(255, 215, 0, 1),
+                     0 0 60px rgba(255, 215, 0, 0.8),
+                     0 0 90px rgba(255, 215, 0, 0.6);
+    }
+}
+
+@keyframes colorShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes messageGlow {
+    from {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                     0 0 20px rgba(255, 255, 255, 0.3),
+                     0 0 30px rgba(255, 255, 255, 0.1);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                     0 0 30px rgba(255, 255, 255, 0.6),
+                     0 0 40px rgba(255, 255, 255, 0.4);
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+}
+
+@keyframes heartFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    .message {
+        font-size: 1.2rem;
+    }
+    
+    .floating-text {
+        font-size: 1rem;
+    }
+}
