@@ -7,9 +7,7 @@
 body {
     overflow: hidden;
     font-family: 'Microsoft YaHei', Arial, sans-serif;
-    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 30%, #16213e 60%, #0f3460 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffb6c1 50%, #ffc0cb 100%);
     height: 100vh;
     width: 100vw;
 }
@@ -33,11 +31,15 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.8);
     text-align: center;
     z-index: 10;
     color: #fff;
-    animation: fadeIn 2s ease-in-out;
+    opacity: 0;
+}
+
+.greeting.animate {
+    animation: fadeIn 2s ease-in-out forwards;
 }
 
 .title {
@@ -76,17 +78,47 @@ body {
     animation-delay: 1.5s;
 }
 
+/* 浮动祝福文字样式 */
 .floating-texts {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 5;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.floating-text {
+    position: absolute;
+    top: 100%;
+    font-weight: bold;
+    opacity: 0;
+    animation: floatUp linear forwards;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     pointer-events: none;
 }
 
-.confetti-container {
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+}
+
+
+
+.heart-container {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -109,68 +141,68 @@ body {
 
 .light-spot {
     position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,215,0,0.4) 40%, transparent 70%);
-    animation: twinkle 3s ease-in-out infinite alternate;
-    filter: blur(2px);
+    background-image: url('热气球.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: floatBalloon 8s ease-in-out infinite alternate;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
 }
 
-.confetti {
-    position: absolute;
-    top: -20px;
-    opacity: 0.8;
-    animation: confettiFall linear infinite;
-    border-radius: 2px;
-}
-
-.floating-text {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.5rem;
-    font-weight: bold;
-    animation: float linear infinite;
-    text-shadow: 0 0 10px currentColor,
-                 0 0 20px currentColor,
-                 0 0 30px currentColor;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-}
-
-
-
-.music-toggle {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 30;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-    transition: all 0.3s ease;
-    animation: musicPulse 2s ease-in-out infinite;
-}
-
-.music-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-}
-
-.music-toggle.paused {
-    animation: none;
-    opacity: 0.6;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
-@keyframes musicPulse {
-    0%, 100% {
-        transform: scale(1);
+@keyframes floatBalloon {
+    0% {
+        transform: translateY(0) rotate(-5deg);
     }
-    50% {
-        transform: scale(1.05);
+    100% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+.falling-heart {
+    position: absolute;
+    top: -50px;
+    opacity: 0.8;
+    background-image: url('heart.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: heartFall linear forwards;
+}
+
+/* 点击爱心容器 */
+.click-heart-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* 点击爱心样式 */
+.click-heart {
+    position: absolute;
+    opacity: 0;
+    background-image: url('heart.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: clickHeartFade ease-out forwards;
+}
+
+@keyframes clickHeartFade {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    30% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
     }
 }
 
@@ -221,18 +253,6 @@ body {
     }
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
 @keyframes colorShift {
     0% {
         background-position: 0% 50%;
@@ -273,13 +293,19 @@ body {
     }
 }
 
-@keyframes confettiFall {
+@keyframes heartFall {
     0% {
         transform: translateY(0) rotate(0deg);
-        opacity: 1;
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
     }
     100% {
-        transform: translateY(100vh) rotate(720deg);
+        transform: translateY(100vh) rotate(360deg);
         opacity: 0;
     }
 }
@@ -292,26 +318,6 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(100vh) rotate(0deg) translateX(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    50% {
-        transform: translateY(50vh) rotate(180deg) translateX(30px);
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100px) rotate(360deg) translateX(-30px);
-        opacity: 0;
     }
 }
 
