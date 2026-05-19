@@ -102,7 +102,7 @@ class Firework {
         
         switch(this.explosionType) {
             case 0: // 超级圆形大爆炸
-                particleCount = 50;
+                particleCount = 30;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = (Math.PI * 2 / particleCount) * i;
                     const speed = Math.random() * 6 + 4;
@@ -116,7 +116,7 @@ class Firework {
                 }
                 
                 // 添加外层光环粒子
-                const outerCount = 20;
+                const outerCount = 12;
                 for (let i = 0; i < outerCount; i++) {
                     const angle = (Math.PI * 2 / outerCount) * i;
                     const speed = Math.random() * 3 + 8;
@@ -130,7 +130,7 @@ class Firework {
                 break;
                 
             case 1: // 超大心形爆炸
-                particleCount = 40;
+                particleCount = 25;
                 for (let i = 0; i < particleCount; i++) {
                     const t = Math.random() * Math.PI * 2;
                     const scale = Math.random() * 6 + 4;
@@ -145,7 +145,7 @@ class Firework {
                 break;
                 
             case 2: // 多重环形爆炸
-                particleCount = 60;
+                particleCount = 35;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = (Math.PI * 2 / particleCount) * i;
                     const radius = Math.random() * 5 + 2;
@@ -160,8 +160,8 @@ class Firework {
                 }
                 
                 // 添加第二层环
-                for (let i = 0; i < 25; i++) {
-                    const angle = (Math.PI * 2 / 25) * i;
+                for (let i = 0; i < 15; i++) {
+                    const angle = (Math.PI * 2 / 15) * i;
                     const speed = 8 + Math.random() * 4;
                     const velocity = {
                         x: Math.cos(angle) * speed,
@@ -173,7 +173,7 @@ class Firework {
                 break;
                 
             case 3: // 超级流星雨爆炸
-                particleCount = 35;
+                particleCount = 20;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.5;
                     const speed = Math.random() * 8 + 6;
@@ -189,7 +189,7 @@ class Firework {
                 break;
                 
             case 4: // 五星形爆炸（新增）
-                particleCount = 45;
+                particleCount = 28;
                 for (let i = 0; i < particleCount; i++) {
                     const k = i % 5;
                     const angle = (Math.PI * 2 / particleCount) * i + (k * Math.PI * 2 / 5);
@@ -206,7 +206,7 @@ class Firework {
                 break;
                 
             case 5: // 螺旋爆炸（新增）
-                particleCount = 55;
+                particleCount = 32;
                 for (let i = 0; i < particleCount; i++) {
                     const angle = i * 0.1;
                     const radius = i * 0.05;
@@ -241,7 +241,7 @@ class Firework {
     }
     
     createSecondaryExplosion() {
-        const secondaryCount = 15;
+        const secondaryCount = 8;
         for (let i = 0; i < secondaryCount; i++) {
             const angle = (Math.PI * 2 / secondaryCount) * i;
             const speed = Math.random() * 3 + 1.5;
@@ -258,7 +258,7 @@ class Firework {
     }
     
     createTertiaryExplosion() {
-        const tertiaryCount = 12;
+        const tertiaryCount = 6;
         for (let i = 0; i < tertiaryCount; i++) {
             const angle = (Math.PI * 2 / tertiaryCount) * i;
             const speed = Math.random() * 2 + 1;
@@ -275,7 +275,7 @@ class Firework {
     }
     
     createShockwave() {
-        const shockwaveCount = 8;
+        const shockwaveCount = 4;
         for (let i = 0; i < shockwaveCount; i++) {
             const angle = (Math.PI * 2 / shockwaveCount) * i;
             const speed = 1 + Math.random() * 1;
@@ -349,7 +349,7 @@ class Star {
 }
 
 let fireworks = [];
-const MAX_TOTAL_PARTICLES = 800; // 限制屏幕上最大总粒子数
+const MAX_TOTAL_PARTICLES = 400; // 限制屏幕上最大总粒子数
 
 // 初始化星星
 function initStars() {
